@@ -2,24 +2,41 @@
 <html lang="id">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>Follow Up Nasabah</title>
-    <link rel="icon" type="image/png" sizes="128x128" href="favicon-128x128.png">
-    <link rel="icon" type="image/png" sizes="128x128" href="favicon-128x128.png">
+
+
+<!-- =========================
+     PWA
+========================= -->
 
 <link rel="manifest" href="manifest.json">
 
-<meta name="theme-color" content="#249D8F">
+<link rel="icon"
+      type="image/png"
+      sizes="128x128"
+      href="favicon-128x128.png">
 
-<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color"
+      content="#249D8F">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable"
+      content="yes">
 
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-capable"
+      content="yes">
 
-<meta name="apple-mobile-web-app-title" content="Follow Up">
+<meta name="apple-mobile-web-app-status-bar-style"
+      content="default">
+
+<meta name="apple-mobile-web-app-title"
+      content="Follow Up">
+
 
 <style>
 
@@ -160,6 +177,60 @@ select:focus {
 .full {
     width: 100%;
     margin-top: 15px;
+}
+
+
+/* =========================
+   INSTALL PWA
+========================= */
+
+.install-box {
+    display: none;
+    background: var(--green);
+    color: white;
+    border-radius: 15px;
+    padding: 14px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
+
+.install-box.show {
+    display: block;
+}
+
+.install-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.install-icon {
+    font-size: 28px;
+}
+
+.install-text {
+    flex: 1;
+}
+
+.install-title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.install-info {
+    font-size: 11px;
+    opacity: .85;
+    margin-top: 3px;
+}
+
+.install-button {
+    background: white;
+    color: var(--green);
+    border: none;
+    border-radius: 9px;
+    padding: 9px 12px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 
@@ -501,9 +572,19 @@ footer {
         grid-template-columns: 1fr;
     }
 
+    .install-content {
+        align-items: flex-start;
+    }
+
+    .install-button {
+        padding: 9px 10px;
+        white-space: nowrap;
+    }
+
 }
 
 </style>
+
 </head>
 
 
@@ -522,6 +603,45 @@ footer {
 
 
 <div class="container">
+
+
+<!-- =========================
+     INSTALL PWA
+========================= -->
+
+<div
+    id="installBox"
+    class="install-box">
+
+    <div class="install-content">
+
+        <div class="install-icon">
+            📱
+        </div>
+
+        <div class="install-text">
+
+            <div class="install-title">
+                Install Aplikasi
+            </div>
+
+            <div class="install-info">
+                Pasang Follow Up di HP seperti aplikasi biasa.
+            </div>
+
+        </div>
+
+        <button
+            id="installButton"
+            class="install-button">
+
+            Install
+
+        </button>
+
+    </div>
+
+</div>
 
 
 <section
@@ -632,16 +752,17 @@ footer {
 
 
 <footer>
-<div>
-    Dikelola & Dikembangkan Oleh:
-</div>
-    
+
+    <div>
+        Dikelola & Dikembangkan Oleh:
+    </div>
+
     <div>
         Helisati Putra Hulu, S.Kom
     </div>
 
     <div>
-        Follow Up Nasabah v3.3 2026
+        Follow Up Nasabah v3.4 PWA 2026
     </div>
 
 </footer>
@@ -819,7 +940,9 @@ footer {
 </div>
 
 
-<!-- SUPABASE -->
+<!-- =========================
+     SUPABASE
+========================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -853,11 +976,6 @@ const ALLOWED_USERNAME =
     "ogan07";
 
 
-/*
-   Email hanya digunakan oleh
-   Supabase Auth di belakang layar.
-*/
-
 const AUTH_EMAIL =
     "helisatiputrahl@gmail.com";
 
@@ -871,6 +989,171 @@ let nasabahData = [];
 let queueWA = [];
 
 let queueIndex = 0;
+
+
+/* =====================================================
+   PWA INSTALL
+===================================================== */
+
+let deferredInstallPrompt = null;
+
+
+const installBox =
+    document.getElementById(
+        "installBox"
+    );
+
+
+const installButton =
+    document.getElementById(
+        "installButton"
+    );
+
+
+window.addEventListener(
+    "beforeinstallprompt",
+    event => {
+
+        event.preventDefault();
+
+        deferredInstallPrompt =
+            event;
+
+        installBox.classList.add(
+            "show"
+        );
+
+    }
+);
+
+
+installButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!deferredInstallPrompt) {
+
+            alert(
+                "Jika tombol install belum muncul, buka menu Chrome ⋮ lalu pilih \"Tambahkan ke layar utama\" atau \"Install aplikasi\"."
+            );
+
+            return;
+
+        }
+
+
+        deferredInstallPrompt.prompt();
+
+
+        const {
+            outcome
+        } =
+            await deferredInstallPrompt
+                .userChoice;
+
+
+        if (
+            outcome === "accepted"
+        ) {
+
+            installBox.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        deferredInstallPrompt =
+            null;
+
+    }
+);
+
+
+window.addEventListener(
+    "appinstalled",
+    () => {
+
+        installBox.classList.remove(
+            "show"
+        );
+
+        console.log(
+            "Follow Up berhasil di-install sebagai PWA."
+        );
+
+    }
+);
+
+
+/* =====================================================
+   CEK MODE PWA
+===================================================== */
+
+function aplikasiSudahTerinstall() {
+
+    return (
+        window.matchMedia(
+            "(display-mode: standalone)"
+        ).matches ||
+        window.navigator.standalone === true
+    );
+
+}
+
+
+if (
+    aplikasiSudahTerinstall()
+) {
+
+    installBox.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   SERVICE WORKER
+===================================================== */
+
+if (
+    "serviceWorker" in navigator
+) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register(
+                    "./service-worker.js"
+                )
+                .then(
+                    registration => {
+
+                        console.log(
+                            "PWA Service Worker aktif:",
+                            registration.scope
+                        );
+
+                    }
+                )
+                .catch(
+                    error => {
+
+                        console.error(
+                            "Service Worker gagal:",
+                            error
+                        );
+
+                    }
+                );
+
+        }
+    );
+
+}
 
 
 /* =====================================================
@@ -2016,26 +2299,11 @@ function renderCustomers(
 function escapeHTML(text) {
 
     return String(text)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
@@ -2298,23 +2566,17 @@ function validasiFormNasabah() {
 
 
     if (!nama) {
-
         return "Nama nasabah wajib diisi.";
-
     }
 
 
     if (!nomor) {
-
         return "Nomor HP wajib diisi.";
-
     }
 
 
     if (!tempo) {
-
         return "Tanggal jatuh tempo wajib diisi.";
-
     }
 
 
@@ -2487,7 +2749,6 @@ async function simpanNasabah() {
 
         }
 
-
         else {
 
             result =
@@ -2511,9 +2772,7 @@ async function simpanNasabah() {
 
 
         if (result.error) {
-
             throw result.error;
-
         }
 
 
@@ -2541,7 +2800,6 @@ async function simpanNasabah() {
                 ? "✅ Data nasabah berhasil diperbarui."
                 : "✅ Data nasabah berhasil ditambahkan."
         );
-
 
     }
 
@@ -3397,35 +3655,6 @@ document
     );
 
 </script>
-<script>
-if ("serviceWorker" in navigator) {
 
-    window.addEventListener(
-        "load",
-        () => {
-
-            navigator.serviceWorker
-                .register("./service-worker.js")
-                .then(() => {
-
-                    console.log(
-                        "PWA Service Worker aktif."
-                    );
-
-                })
-                .catch(error => {
-
-                    console.error(
-                        "Service Worker gagal:",
-                        error
-                    );
-
-                });
-
-        }
-    );
-
-}
-</script>
 </body>
 </html>
