@@ -149,6 +149,12 @@ select:focus {
     transform: scale(.97);
 }
 
+.btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .btn-primary {
     background: var(--green);
     color: white;
@@ -487,16 +493,21 @@ select:focus {
     color: #6b7280;
 }
 
+
+/* PERBAIKAN QUEUE */
+
 .queue-buttons {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-top: 5px;
+    grid-template-columns: 1fr 1.2fr 1.2fr 1fr;
+    gap: 7px;
+    margin-top: 12px;
 }
 
 .queue-buttons .btn {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 0;
+    padding: 11px 6px;
+    font-size: 12px;
 }
 
 
@@ -591,6 +602,19 @@ footer {
     .install-button {
         padding: 9px 10px;
         white-space: nowrap;
+    }
+
+
+    /* QUEUE MOBILE */
+
+    .queue-buttons {
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+    }
+
+    .queue-buttons .btn {
+        font-size: 11px;
+        padding: 11px 5px;
     }
 
 }
@@ -737,13 +761,26 @@ footer {
             </div>
 
 
+            <!-- PERBAIKAN:
+                 BACK | WA | TELEPON | NEXT -->
+
             <div class="queue-buttons">
+
+                <button
+                    id="queueBackButton"
+                    class="btn btn-light"
+                    onclick="queueSebelumnya()">
+
+                    ⬅ Back
+
+                </button>
+
 
                 <button
                     class="btn btn-primary"
                     onclick="kirimWAQueueBerikutnya()">
 
-                    📲 Kirim WA Berikutnya
+                    📲 WA
 
                 </button>
 
@@ -752,7 +789,17 @@ footer {
                     class="btn btn-dark"
                     onclick="teleponQueueBerikutnya()">
 
-                    📞 Telepon Berikutnya
+                    📞 Telepon
+
+                </button>
+
+
+                <button
+                    id="queueNextButton"
+                    class="btn btn-orange"
+                    onclick="queueBerikutnya()">
+
+                    Next ➡
 
                 </button>
 
@@ -3424,7 +3471,7 @@ function teleponNasabah(
 
 
 /* =====================================================
-   MULAI KIRIM SEMUA
+   MULAI ANTRIAN
 ===================================================== */
 
 function mulaiKirimSemua(
@@ -3470,8 +3517,11 @@ function mulaiKirimSemua(
 
     updateQueueInfo();
 
-
-    kirimWAQueueBerikutnya();
+    /*
+       PENTING:
+       Tidak lagi otomatis menjalankan WA.
+       User memilih sendiri WA / Telepon.
+    */
 
 }
 
@@ -3489,13 +3539,35 @@ function updateQueueInfo() {
             );
 
 
+    const backButton =
+        document
+            .getElementById(
+                "queueBackButton"
+            );
+
+
+    const nextButton =
+        document
+            .getElementById(
+                "queueNextButton"
+            );
+
+
     if (
-        queueIndex >=
-        queueWA.length
+        !queueWA.length
     ) {
 
         info.innerHTML =
-            "✅ Semua nasabah dalam antrian sudah selesai.";
+            "Tidak ada nasabah dalam antrian.";
+
+
+        backButton.disabled =
+            true;
+
+
+        nextButton.disabled =
+            true;
+
 
         return;
 
@@ -3504,6 +3576,25 @@ function updateQueueInfo() {
 
     const nasabah =
         queueWA[queueIndex];
+
+
+    if (!nasabah) {
+
+        info.innerHTML =
+            "Data nasabah tidak ditemukan.";
+
+
+        backButton.disabled =
+            true;
+
+
+        nextButton.disabled =
+            true;
+
+
+        return;
+
+    }
 
 
     info.innerHTML =
@@ -3516,24 +3607,43 @@ function updateQueueInfo() {
              String(
                  nasabah.id ?? "-"
              )
-         )}</b>`;
+         )}</b>
+         • 📱 ${escapeHTML(
+             nasabah.nomor_hp || "-"
+         )}`;
+
+
+    /*
+       Back mati jika sudah di nasabah pertama.
+    */
+
+    backButton.disabled =
+        queueIndex <= 0;
+
+
+    /*
+       Next mati jika sudah di nasabah terakhir.
+    */
+
+    nextButton.disabled =
+        queueIndex >=
+        queueWA.length - 1;
 
 }
 
 
 /* =====================================================
-   WA BERIKUTNYA
+   WA NASABAH SAAT INI
 ===================================================== */
 
 function kirimWAQueueBerikutnya() {
 
     if (
-        queueIndex >=
-        queueWA.length
+        !queueWA.length
     ) {
 
         alert(
-            "Semua pesan dalam antrian sudah dibuka."
+            "Antrian belum tersedia."
         );
 
         return;
@@ -3545,10 +3655,32 @@ function kirimWAQueueBerikutnya() {
         queueWA[queueIndex];
 
 
+    if (!nasabah) {
+
+        alert(
+            "Data nasabah tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+
     const nomor =
         formatNomorWA(
             nasabah.nomor_hp
         );
+
+
+    if (!nomor) {
+
+        alert(
+            "Nomor WhatsApp tidak tersedia."
+        );
+
+        return;
+
+    }
 
 
     const pesan =
@@ -3557,14 +3689,11 @@ function kirimWAQueueBerikutnya() {
         );
 
 
-    if (
-        !nomor ||
-        !pesan
-    ) {
+    if (!pesan) {
 
-        queueIndex++;
-
-        updateQueueInfo();
+        alert(
+            "Pesan follow up belum tersedia untuk status ini."
+        );
 
         return;
 
@@ -3586,27 +3715,28 @@ function kirimWAQueueBerikutnya() {
     );
 
 
-    queueIndex++;
+    /*
+       TIDAK ADA queueIndex++ DI SINI.
 
-
-    updateQueueInfo();
+       Jadi setelah WA dibuka,
+       posisi nasabah tetap sama.
+    */
 
 }
 
 
 /* =====================================================
-   TELEPON BERIKUTNYA
+   TELEPON NASABAH SAAT INI
 ===================================================== */
 
 function teleponQueueBerikutnya() {
 
     if (
-        queueIndex >=
-        queueWA.length
+        !queueWA.length
     ) {
 
         alert(
-            "Semua nasabah dalam antrian sudah selesai."
+            "Antrian belum tersedia."
         );
 
         return;
@@ -3616,6 +3746,17 @@ function teleponQueueBerikutnya() {
 
     const nasabah =
         queueWA[queueIndex];
+
+
+    if (!nasabah) {
+
+        alert(
+            "Data nasabah tidak ditemukan."
+        );
+
+        return;
+
+    }
 
 
     const nomor =
@@ -3638,6 +3779,82 @@ function teleponQueueBerikutnya() {
     window.location.href =
         "tel:+" +
         nomor;
+
+
+    /*
+       Tidak mengubah queueIndex.
+       Setelah telepon selesai,
+       posisi tetap pada nasabah tersebut.
+    */
+
+}
+
+
+/* =====================================================
+   NEXT ANTRIAN
+===================================================== */
+
+function queueBerikutnya() {
+
+    if (
+        !queueWA.length
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        queueIndex >=
+        queueWA.length - 1
+    ) {
+
+        updateQueueInfo();
+
+        return;
+
+    }
+
+
+    queueIndex++;
+
+
+    updateQueueInfo();
+
+}
+
+
+/* =====================================================
+   BACK ANTRIAN
+===================================================== */
+
+function queueSebelumnya() {
+
+    if (
+        !queueWA.length
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        queueIndex <= 0
+    ) {
+
+        updateQueueInfo();
+
+        return;
+
+    }
+
+
+    queueIndex--;
+
+
+    updateQueueInfo();
 
 }
 
