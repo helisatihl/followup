@@ -461,7 +461,7 @@ select:focus {
 
 
 /* =========================
-   QUEUE WA
+   QUEUE WA + TELEPON
 ========================= */
 
 .queue-box {
@@ -485,6 +485,18 @@ select:focus {
     font-size: 12px;
     margin-top: 5px;
     color: #6b7280;
+}
+
+.queue-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.queue-buttons .btn {
+    width: 100%;
+    margin-top: 10px;
 }
 
 
@@ -725,13 +737,26 @@ footer {
             </div>
 
 
-            <button
-                class="btn btn-primary full"
-                onclick="kirimWAQueueBerikutnya()">
+            <div class="queue-buttons">
 
-                📲 Kirim WA Berikutnya
+                <button
+                    class="btn btn-primary"
+                    onclick="kirimWAQueueBerikutnya()">
 
-            </button>
+                    📲 Kirim WA Berikutnya
+
+                </button>
+
+
+                <button
+                    class="btn btn-dark"
+                    onclick="teleponQueueBerikutnya()">
+
+                    📞 Telepon Berikutnya
+
+                </button>
+
+            </div>
 
         </div>
 
@@ -762,7 +787,7 @@ footer {
     </div>
 
     <div>
-        Follow Up Nasabah v3.4 PWA 2026
+        Follow Up Nasabah v3.5 PWA 2026
     </div>
 
 </footer>
@@ -1657,6 +1682,51 @@ async function logout() {
 
 
 /* =====================================================
+   SORT ID
+===================================================== */
+
+function sortByIdAscending(data) {
+
+    return [...data].sort(
+        (a, b) => {
+
+            const idA =
+                Number(a.id);
+
+            const idB =
+                Number(b.id);
+
+
+            if (
+                Number.isFinite(idA) &&
+                Number.isFinite(idB)
+            ) {
+
+                return idA - idB;
+
+            }
+
+
+            return String(
+                a.id ?? ""
+            ).localeCompare(
+                String(
+                    b.id ?? ""
+                ),
+                undefined,
+                {
+                    numeric: true,
+                    sensitivity: "base"
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
    AMBIL DATA
 ===================================================== */
 
@@ -1705,7 +1775,7 @@ async function ambilDataNasabah() {
             .from("nasabah")
             .select("*")
             .order(
-                "tanggal_jatuh_tempo",
+                "id",
                 {
                     ascending: true
                 }
@@ -1728,7 +1798,9 @@ async function ambilDataNasabah() {
 
 
     nasabahData =
-        data || [];
+        sortByIdAscending(
+            data || []
+        );
 
 
     renderFolders();
@@ -1860,11 +1932,13 @@ function renderFolders() {
         status => {
 
             const data =
-                nasabahData.filter(
-                    n =>
-                        getStatusNasabah(
-                            n.tanggal_jatuh_tempo
-                        ) === status
+                sortByIdAscending(
+                    nasabahData.filter(
+                        n =>
+                            getStatusNasabah(
+                                n.tanggal_jatuh_tempo
+                            ) === status
+                    )
                 );
 
 
@@ -1969,22 +2043,26 @@ function renderSubfolders(
 ) {
 
     const lima =
-        nasabahData.filter(
-            n =>
-                getStatusNasabah(
-                    n.tanggal_jatuh_tempo
-                ) === status &&
-                Number(n.bunga) === 5
+        sortByIdAscending(
+            nasabahData.filter(
+                n =>
+                    getStatusNasabah(
+                        n.tanggal_jatuh_tempo
+                    ) === status &&
+                    Number(n.bunga) === 5
+            )
         );
 
 
     const sepuluh =
-        nasabahData.filter(
-            n =>
-                getStatusNasabah(
-                    n.tanggal_jatuh_tempo
-                ) === status &&
-                Number(n.bunga) === 10
+        sortByIdAscending(
+            nasabahData.filter(
+                n =>
+                    getStatusNasabah(
+                        n.tanggal_jatuh_tempo
+                    ) === status &&
+                    Number(n.bunga) === 10
+            )
         );
 
 
@@ -2146,6 +2224,12 @@ function renderCustomers(
     status,
     bunga
 ) {
+
+    data =
+        sortByIdAscending(
+            data
+        );
+
 
     if (!data.length) {
 
@@ -3169,6 +3253,56 @@ function formatNomorWA(
 
 
 /* =====================================================
+   FORMAT TELEPON
+===================================================== */
+
+function formatNomorTelepon(
+    nomor
+) {
+
+    let no =
+        String(
+            nomor || ""
+        )
+        .replace(
+            /\D/g,
+            ""
+        );
+
+
+    if (!no) {
+        return "";
+    }
+
+
+    if (
+        no.startsWith("0")
+    ) {
+
+        no =
+            "62" +
+            no.substring(1);
+
+    }
+
+
+    if (
+        !no.startsWith("62")
+    ) {
+
+        no =
+            "62" +
+            no;
+
+    }
+
+
+    return no;
+
+}
+
+
+/* =====================================================
    WA SATU
 ===================================================== */
 
@@ -3243,7 +3377,7 @@ function kirimWASatu(
 
 
 /* =====================================================
-   TELEPON
+   TELEPON SATU
 ===================================================== */
 
 function teleponNasabah(
@@ -3265,13 +3399,9 @@ function teleponNasabah(
     }
 
 
-    let nomor =
-        String(
-            nasabah.nomor_hp || ""
-        )
-        .replace(
-            /\D/g,
-            ""
+    const nomor =
+        formatNomorTelepon(
+            nasabah.nomor_hp
         );
 
 
@@ -3282,17 +3412,6 @@ function teleponNasabah(
         );
 
         return;
-
-    }
-
-
-    if (
-        nomor.startsWith("0")
-    ) {
-
-        nomor =
-            "62" +
-            nomor.substring(1);
 
     }
 
@@ -3314,13 +3433,15 @@ function mulaiKirimSemua(
 ) {
 
     queueWA =
-        nasabahData.filter(
-            n =>
-                getStatusNasabah(
-                    n.tanggal_jatuh_tempo
-                ) === status &&
-                Number(n.bunga) ===
-                    Number(bunga)
+        sortByIdAscending(
+            nasabahData.filter(
+                n =>
+                    getStatusNasabah(
+                        n.tanggal_jatuh_tempo
+                    ) === status &&
+                    Number(n.bunga) ===
+                        Number(bunga)
+            )
         );
 
 
@@ -3390,6 +3511,11 @@ function updateQueueInfo() {
          dari ${queueWA.length}:
          <b>${escapeHTML(
              nasabah.nama || "-"
+         )}</b>
+         • ID: <b>${escapeHTML(
+             String(
+                 nasabah.id ?? "-"
+             )
          )}</b>`;
 
 }
@@ -3464,6 +3590,54 @@ function kirimWAQueueBerikutnya() {
 
 
     updateQueueInfo();
+
+}
+
+
+/* =====================================================
+   TELEPON BERIKUTNYA
+===================================================== */
+
+function teleponQueueBerikutnya() {
+
+    if (
+        queueIndex >=
+        queueWA.length
+    ) {
+
+        alert(
+            "Semua nasabah dalam antrian sudah selesai."
+        );
+
+        return;
+
+    }
+
+
+    const nasabah =
+        queueWA[queueIndex];
+
+
+    const nomor =
+        formatNomorTelepon(
+            nasabah.nomor_hp
+        );
+
+
+    if (!nomor) {
+
+        alert(
+            "Nomor telepon nasabah tidak tersedia."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "tel:+" +
+        nomor;
 
 }
 
