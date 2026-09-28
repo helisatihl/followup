@@ -10,11 +10,6 @@
 
 <title>Follow Up Nasabah</title>
 
-
-<!-- =========================
-     PWA
-========================= -->
-
 <link rel="manifest" href="manifest.json">
 
 <link rel="icon"
@@ -36,7 +31,6 @@
 
 <meta name="apple-mobile-web-app-title"
       content="Follow Up">
-
 
 <style>
 
@@ -338,6 +332,66 @@ select:focus {
 
 
 /* =========================
+   PENCARIAN
+========================= */
+
+.search-box {
+    background: #f8fafb;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 13px;
+    margin-top: 15px;
+}
+
+.search-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.search-info {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.search-results {
+    margin-top: 10px;
+}
+
+.search-result {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.search-result-name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.search-result-info {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #4b5563;
+    margin-top: 5px;
+}
+
+.search-late {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--dark);
+    padding: 5px 9px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 7px;
+}
+
+
+/* =========================
    FOLDER
 ========================= */
 
@@ -493,9 +547,6 @@ select:focus {
     color: #6b7280;
 }
 
-
-/* PERBAIKAN QUEUE */
-
 .queue-buttons {
     display: grid;
     grid-template-columns: 1fr 1.2fr 1.2fr 1fr;
@@ -604,9 +655,6 @@ footer {
         white-space: nowrap;
     }
 
-
-    /* QUEUE MOBILE */
-
     .queue-buttons {
         grid-template-columns: 1fr 1fr;
         gap: 7px;
@@ -623,9 +671,7 @@ footer {
 
 </head>
 
-
 <body>
-
 
 <header class="header">
 
@@ -637,13 +683,7 @@ footer {
 
 </header>
 
-
 <div class="container">
-
-
-<!-- =========================
-     INSTALL PWA
-========================= -->
 
 <div
     id="installBox"
@@ -679,7 +719,6 @@ footer {
 
 </div>
 
-
 <section
     id="followup"
     class="section active">
@@ -704,7 +743,6 @@ footer {
 
             </div>
 
-
             <button
                 class="btn btn-danger"
                 id="logoutButton"
@@ -716,7 +754,6 @@ footer {
             </button>
 
         </div>
-
 
         <div
             id="crudBar"
@@ -731,7 +768,6 @@ footer {
 
             </button>
 
-
             <button
                 class="btn btn-dark"
                 onclick="ambilDataNasabah()">
@@ -742,27 +778,44 @@ footer {
 
         </div>
 
+        <div
+            id="searchBox"
+            class="search-box"
+            style="display:none;">
+
+            <div class="search-title">
+                🔎 Cari Nasabah
+            </div>
+
+            <input
+                type="search"
+                id="searchNasabah"
+                placeholder="Nama / No. SBG"
+                autocomplete="off">
+
+            <div class="search-info">
+                Penaksir dapat mencari nasabah berdasarkan Nama atau No. SBG dan melihat keterlambatan.
+            </div>
+
+            <div
+                id="searchResults"
+                class="search-results">
+            </div>
+
+        </div>
 
         <div
             id="queueBox"
             class="queue-box">
 
             <div class="queue-title">
-
                 🚀 Antrian Follow Up
-
             </div>
-
 
             <div
                 id="queueInfo"
                 class="queue-info">
-
             </div>
-
-
-            <!-- PERBAIKAN:
-                 BACK | WA | TELEPON | NEXT -->
 
             <div class="queue-buttons">
 
@@ -775,7 +828,6 @@ footer {
 
                 </button>
 
-
                 <button
                     class="btn btn-primary"
                     onclick="kirimWAQueueBerikutnya()">
@@ -784,7 +836,6 @@ footer {
 
                 </button>
 
-
                 <button
                     class="btn btn-dark"
                     onclick="teleponQueueBerikutnya()">
@@ -792,7 +843,6 @@ footer {
                     📞 Telepon
 
                 </button>
-
 
                 <button
                     id="queueNextButton"
@@ -807,7 +857,6 @@ footer {
 
         </div>
 
-
         <div
             id="folderArea"
             class="loading">
@@ -821,7 +870,6 @@ footer {
 </section>
 
 </div>
-
 
 <footer>
 
@@ -838,11 +886,6 @@ footer {
     </div>
 
 </footer>
-
-
-<!-- =========================
-     LOGIN
-========================= -->
 
 <div
     id="loginOverlay"
@@ -862,7 +905,6 @@ footer {
             Akses database hanya untuk akun resmi.
         </p>
 
-
         <label>
             Username
         </label>
@@ -876,7 +918,6 @@ footer {
             spellcheck="false"
         >
 
-
         <label>
             Password
         </label>
@@ -888,7 +929,6 @@ footer {
             autocomplete="current-password"
         >
 
-
         <button
             class="btn btn-primary full"
             onclick="login()">
@@ -897,21 +937,14 @@ footer {
 
         </button>
 
-
         <div
             id="loginError"
             class="error">
-
         </div>
 
     </div>
 
 </div>
-
-
-<!-- =========================
-     MODAL
-========================= -->
 
 <div
     id="nasabahModal"
@@ -923,12 +956,10 @@ footer {
             ➕ Tambah Nasabah
         </h3>
 
-
         <input
             type="hidden"
             id="nasabahId"
         >
-
 
         <label>
             Nama Nasabah
@@ -940,6 +971,15 @@ footer {
             placeholder="Nama lengkap"
         >
 
+        <label>
+            No. SBG
+        </label>
+
+        <input
+            type="text"
+            id="nasabahSbg"
+            placeholder="Nomor Surat Bukti Gadai"
+        >
 
         <label>
             Nomor HP / WhatsApp
@@ -951,7 +991,6 @@ footer {
             placeholder="0812xxxxxxxx"
         >
 
-
         <label>
             Tanggal Jatuh Tempo
         </label>
@@ -960,7 +999,6 @@ footer {
             type="date"
             id="nasabahTempo"
         >
-
 
         <label>
             Bunga Gadai
@@ -978,12 +1016,10 @@ footer {
 
         </select>
 
-
         <div
             id="crudError"
             class="error">
         </div>
-
 
         <div class="modal-buttons">
 
@@ -994,7 +1030,6 @@ footer {
                 Batal
 
             </button>
-
 
             <button
                 id="simpanNasabahButton"
@@ -1011,13 +1046,7 @@ footer {
 
 </div>
 
-
-<!-- =========================
-     SUPABASE
-========================= -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script>
 
@@ -1028,10 +1057,8 @@ footer {
 const SUPABASE_URL =
     "https://rldwmtnfmcbofmrcovun.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
     "sb_publishable_eowjNKm4rDF0UvYZmGm-mQ_popqRhB9";
-
 
 const supabaseClient =
     window.supabase.createClient(
@@ -1046,7 +1073,6 @@ const supabaseClient =
 
 const ALLOWED_USERNAME =
     "ogan07";
-
 
 const AUTH_EMAIL =
     "helisatiputrahl@gmail.com";
@@ -1069,18 +1095,11 @@ let queueIndex = 0;
 
 let deferredInstallPrompt = null;
 
-
 const installBox =
-    document.getElementById(
-        "installBox"
-    );
-
+    document.getElementById("installBox");
 
 const installButton =
-    document.getElementById(
-        "installButton"
-    );
-
+    document.getElementById("installButton");
 
 window.addEventListener(
     "beforeinstallprompt",
@@ -1088,16 +1107,12 @@ window.addEventListener(
 
         event.preventDefault();
 
-        deferredInstallPrompt =
-            event;
+        deferredInstallPrompt = event;
 
-        installBox.classList.add(
-            "show"
-        );
+        installBox.classList.add("show");
 
     }
 );
-
 
 installButton.addEventListener(
     "click",
@@ -1110,45 +1125,31 @@ installButton.addEventListener(
             );
 
             return;
-
         }
 
-
         deferredInstallPrompt.prompt();
-
 
         const {
             outcome
         } =
-            await deferredInstallPrompt
-                .userChoice;
+            await deferredInstallPrompt.userChoice;
 
+        if (outcome === "accepted") {
 
-        if (
-            outcome === "accepted"
-        ) {
-
-            installBox.classList.remove(
-                "show"
-            );
+            installBox.classList.remove("show");
 
         }
 
-
-        deferredInstallPrompt =
-            null;
+        deferredInstallPrompt = null;
 
     }
 );
-
 
 window.addEventListener(
     "appinstalled",
     () => {
 
-        installBox.classList.remove(
-            "show"
-        );
+        installBox.classList.remove("show");
 
         console.log(
             "Follow Up berhasil di-install sebagai PWA."
@@ -1173,14 +1174,9 @@ function aplikasiSudahTerinstall() {
 
 }
 
+if (aplikasiSudahTerinstall()) {
 
-if (
-    aplikasiSudahTerinstall()
-) {
-
-    installBox.classList.remove(
-        "show"
-    );
+    installBox.classList.remove("show");
 
 }
 
@@ -1189,18 +1185,14 @@ if (
    SERVICE WORKER
 ===================================================== */
 
-if (
-    "serviceWorker" in navigator
-) {
+if ("serviceWorker" in navigator) {
 
     window.addEventListener(
         "load",
         () => {
 
             navigator.serviceWorker
-                .register(
-                    "./service-worker.js"
-                )
+                .register("./service-worker.js")
                 .then(
                     registration => {
 
@@ -1238,17 +1230,12 @@ function userDiizinkan(user) {
         return false;
     }
 
-
     const email =
-        String(
-            user.email || ""
-        )
+        String(user.email || "")
         .trim()
         .toLowerCase();
 
-
-    return email ===
-        AUTH_EMAIL.toLowerCase();
+    return email === AUTH_EMAIL.toLowerCase();
 
 }
 
@@ -1267,17 +1254,14 @@ function tanggalLocal(date) {
 
 }
 
-
 function parseTanggal(value) {
 
     if (!value) {
         return null;
     }
 
-
     const parts =
-        value.split("-");
-
+        String(value).split("-");
 
     return new Date(
         Number(parts[0]),
@@ -1287,27 +1271,49 @@ function parseTanggal(value) {
 
 }
 
-
 function selisihHari(
     tanggalAkhir,
     tanggalAwal
 ) {
 
     const a =
-        tanggalLocal(
-            tanggalAkhir
-        );
-
+        tanggalLocal(tanggalAkhir);
 
     const b =
-        tanggalLocal(
-            tanggalAwal
-        );
-
+        tanggalLocal(tanggalAwal);
 
     return Math.round(
         (a - b) / 86400000
     );
+
+}
+
+
+/* =====================================================
+   JUMLAH HARI TERLAMBAT
+===================================================== */
+
+function getHariTerlambat(
+    tanggalTempo
+) {
+
+    const tempo =
+        parseTanggal(tanggalTempo);
+
+    if (!tempo) {
+        return 0;
+    }
+
+    const today =
+        tanggalLocal(new Date());
+
+    const diff =
+        selisihHari(
+            today,
+            tempo
+        );
+
+    return diff > 0 ? diff : 0;
 
 }
 
@@ -1321,7 +1327,6 @@ function formatTanggal(date) {
     if (!date) {
         return "-";
     }
-
 
     return date.toLocaleDateString(
         "id-ID",
@@ -1343,37 +1348,23 @@ async function login() {
 
     const username =
         document
-            .getElementById(
-                "loginUsername"
-            )
+            .getElementById("loginUsername")
             .value
             .trim()
             .toLowerCase();
 
-
     const password =
         document
-            .getElementById(
-                "loginPassword"
-            )
+            .getElementById("loginPassword")
             .value;
-
 
     const errorBox =
         document
-            .getElementById(
-                "loginError"
-            );
+            .getElementById("loginError");
 
+    errorBox.style.display = "none";
 
-    errorBox.style.display =
-        "none";
-
-
-    if (
-        !username ||
-        !password
-    ) {
+    if (!username || !password) {
 
         tampilkanLoginError(
             "Username dan password wajib diisi."
@@ -1382,7 +1373,6 @@ async function login() {
         return;
 
     }
-
 
     if (
         username !==
@@ -1397,23 +1387,17 @@ async function login() {
 
     }
 
-
     const {
         data,
         error
     } =
-        await supabaseClient
-            .auth
-            .signInWithPassword({
+        await supabaseClient.auth.signInWithPassword({
 
-                email:
-                    AUTH_EMAIL,
+            email: AUTH_EMAIL,
 
-                password:
-                    password
+            password: password
 
-            });
-
+        });
 
     if (error) {
 
@@ -1425,18 +1409,12 @@ async function login() {
 
     }
 
-
     if (
         !data.user ||
-        !userDiizinkan(
-            data.user
-        )
+        !userDiizinkan(data.user)
     ) {
 
-        await supabaseClient
-            .auth
-            .signOut();
-
+        await supabaseClient.auth.signOut();
 
         tampilkanLoginError(
             "Akun tidak diizinkan."
@@ -1446,43 +1424,25 @@ async function login() {
 
     }
 
-
     document
-        .getElementById(
-            "loginOverlay"
-        )
-        .classList.remove(
-            "show"
-        );
+        .getElementById("loginOverlay")
+        .classList.remove("show");
 
-
-    updateUserInfo(
-        data.user
-    );
-
+    updateUserInfo(data.user);
 
     await ambilDataNasabah();
 
 }
 
 
-function tampilkanLoginError(
-    pesan
-) {
+function tampilkanLoginError(pesan) {
 
     const box =
-        document
-            .getElementById(
-                "loginError"
-            );
+        document.getElementById("loginError");
 
+    box.innerText = pesan;
 
-    box.innerText =
-        pesan;
-
-
-    box.style.display =
-        "block";
+    box.style.display = "block";
 
 }
 
@@ -1497,10 +1457,7 @@ async function cekSessionFollowUp() {
         data,
         error
     } =
-        await supabaseClient
-            .auth
-            .getSession();
-
+        await supabaseClient.auth.getSession();
 
     if (
         error ||
@@ -1513,17 +1470,13 @@ async function cekSessionFollowUp() {
 
     }
 
-
     if (
         !userDiizinkan(
             data.session.user
         )
     ) {
 
-        await supabaseClient
-            .auth
-            .signOut();
-
+        await supabaseClient.auth.signOut();
 
         tampilkanBelumLogin();
 
@@ -1531,20 +1484,11 @@ async function cekSessionFollowUp() {
 
     }
 
-
     document
-        .getElementById(
-            "loginOverlay"
-        )
-        .classList.remove(
-            "show"
-        );
+        .getElementById("loginOverlay")
+        .classList.remove("show");
 
-
-    updateUserInfo(
-        data.session.user
-    );
-
+    updateUserInfo(data.session.user);
 
     await ambilDataNasabah();
 
@@ -1558,42 +1502,27 @@ async function cekSessionFollowUp() {
 function tampilkanBelumLogin() {
 
     document
-        .getElementById(
-            "loginOverlay"
-        )
-        .classList.add(
-            "show"
-        );
-
+        .getElementById("loginOverlay")
+        .classList.add("show");
 
     document
-        .getElementById(
-            "logoutButton"
-        )
-        .style.display =
-        "none";
-
+        .getElementById("logoutButton")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "crudBar"
-        )
-        .style.display =
-        "none";
-
+        .getElementById("crudBar")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "userInfo"
-        )
-        .innerText =
-        "Silakan login.";
-
+        .getElementById("searchBox")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "folderArea"
-        )
+        .getElementById("userInfo")
+        .innerText = "Silakan login.";
+
+    document
+        .getElementById("folderArea")
         .innerHTML =
         `<div class="empty">
             🔐 Login diperlukan untuk melihat data nasabah.
@@ -1612,30 +1541,22 @@ function updateUserInfo(user) {
         return;
     }
 
-
     document
-        .getElementById(
-            "userInfo"
-        )
+        .getElementById("userInfo")
         .innerText =
-        "Login: " +
-        ALLOWED_USERNAME;
-
+        "Login: " + ALLOWED_USERNAME;
 
     document
-        .getElementById(
-            "logoutButton"
-        )
-        .style.display =
-        "block";
-
+        .getElementById("logoutButton")
+        .style.display = "block";
 
     document
-        .getElementById(
-            "crudBar"
-        )
-        .style.display =
-        "grid";
+        .getElementById("crudBar")
+        .style.display = "grid";
+
+    document
+        .getElementById("searchBox")
+        .style.display = "block";
 
 }
 
@@ -1646,10 +1567,7 @@ function updateUserInfo(user) {
 
 async function logout() {
 
-    await supabaseClient
-        .auth
-        .signOut();
-
+    await supabaseClient.auth.signOut();
 
     nasabahData = [];
 
@@ -1657,73 +1575,52 @@ async function logout() {
 
     queueIndex = 0;
 
-
     document
-        .getElementById(
-            "folderArea"
-        )
+        .getElementById("folderArea")
         .innerHTML =
         `<div class="empty">
             Silakan login untuk melihat data.
         </div>`;
 
+    document
+        .getElementById("userInfo")
+        .innerText = "Belum login";
 
     document
-        .getElementById(
-            "userInfo"
-        )
-        .innerText =
-        "Belum login";
-
+        .getElementById("logoutButton")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "logoutButton"
-        )
-        .style.display =
-        "none";
-
+        .getElementById("crudBar")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "crudBar"
-        )
-        .style.display =
-        "none";
-
+        .getElementById("searchBox")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "queueBox"
-        )
-        .classList.remove(
-            "show"
-        );
-
+        .getElementById("queueBox")
+        .classList.remove("show");
 
     document
-        .getElementById(
-            "loginUsername"
-        )
-        .value =
-        "";
-
+        .getElementById("searchNasabah")
+        .value = "";
 
     document
-        .getElementById(
-            "loginPassword"
-        )
-        .value =
-        "";
-
+        .getElementById("searchResults")
+        .innerHTML = "";
 
     document
-        .getElementById(
-            "loginOverlay"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("loginUsername")
+        .value = "";
+
+    document
+        .getElementById("loginPassword")
+        .value = "";
+
+    document
+        .getElementById("loginOverlay")
+        .classList.add("show");
 
 }
 
@@ -1737,12 +1634,9 @@ function sortByIdAscending(data) {
     return [...data].sort(
         (a, b) => {
 
-            const idA =
-                Number(a.id);
+            const idA = Number(a.id);
 
-            const idB =
-                Number(b.id);
-
+            const idB = Number(b.id);
 
             if (
                 Number.isFinite(idA) &&
@@ -1753,22 +1647,75 @@ function sortByIdAscending(data) {
 
             }
 
-
-            return String(
-                a.id ?? ""
-            ).localeCompare(
-                String(
-                    b.id ?? ""
-                ),
-                undefined,
-                {
-                    numeric: true,
-                    sensitivity: "base"
-                }
-            );
+            return String(a.id ?? "")
+                .localeCompare(
+                    String(b.id ?? ""),
+                    undefined,
+                    {
+                        numeric: true,
+                        sensitivity: "base"
+                    }
+                );
 
         }
     );
+
+}
+
+
+/* =====================================================
+   HAPUS OTOMATIS DARI CLIENT
+===================================================== */
+
+async function hapusNasabahLewat15Hari() {
+
+    const cutoff =
+        new Date();
+
+    cutoff.setHours(
+        0, 0, 0, 0
+    );
+
+    cutoff.setDate(
+        cutoff.getDate() - 15
+    );
+
+    const tanggalBatas =
+        cutoff.toISOString()
+        .split("T")[0];
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("nasabah")
+            .delete()
+            .lt(
+                "tanggal_jatuh_tempo",
+                tanggalBatas
+            )
+            .select("id");
+
+    if (error) {
+
+        console.error(
+            "Gagal menjalankan pembersihan otomatis:",
+            error
+        );
+
+        return;
+
+    }
+
+    if (data && data.length) {
+
+        console.log(
+            "Data lewat lebih dari 15 hari dihapus:",
+            data.length
+        );
+
+    }
 
 }
 
@@ -1780,11 +1727,9 @@ function sortByIdAscending(data) {
 async function ambilDataNasabah() {
 
     const area =
-        document
-            .getElementById(
-                "folderArea"
-            );
-
+        document.getElementById(
+            "folderArea"
+        );
 
     const {
         data: sessionData
@@ -1792,7 +1737,6 @@ async function ambilDataNasabah() {
         await supabaseClient
             .auth
             .getSession();
-
 
     if (
         !sessionData.session ||
@@ -1807,12 +1751,12 @@ async function ambilDataNasabah() {
 
     }
 
-
     area.innerHTML =
         `<div class="loading">
             ⏳ Mengambil data nasabah...
         </div>`;
 
+    await hapusNasabahLewat15Hari();
 
     const {
         data,
@@ -1828,29 +1772,36 @@ async function ambilDataNasabah() {
                 }
             );
 
-
     if (error) {
 
         area.innerHTML =
             `<div class="empty">
                 ❌ Gagal mengambil data.<br><br>
-                ${escapeHTML(
-                    error.message
-                )}
+                ${escapeHTML(error.message)}
             </div>`;
 
         return;
 
     }
 
-
     nasabahData =
         sortByIdAscending(
             data || []
         );
 
-
     renderFolders();
+
+    const searchInput =
+        document.getElementById("searchNasabah");
+
+    if (
+        searchInput &&
+        searchInput.value.trim()
+    ) {
+
+        cariNasabah();
+
+    }
 
 }
 
@@ -1864,21 +1815,14 @@ function getStatusNasabah(
 ) {
 
     const tempo =
-        parseTanggal(
-            tanggalTempo
-        );
-
+        parseTanggal(tanggalTempo);
 
     if (!tempo) {
         return "unknown";
     }
 
-
     const today =
-        tanggalLocal(
-            new Date()
-        );
-
+        tanggalLocal(new Date());
 
     const diff =
         selisihHari(
@@ -1886,21 +1830,17 @@ function getStatusNasabah(
             tempo
         );
 
-
     if (diff === -2) {
         return "H-2";
     }
-
 
     if (diff === -1) {
         return "H-1";
     }
 
-
     if (diff === 0) {
         return "H";
     }
-
 
     if (
         diff >= 1 &&
@@ -1911,11 +1851,9 @@ function getStatusNasabah(
 
     }
 
-
     if (diff > 10) {
         return ">10";
     }
-
 
     return "belum";
 
@@ -1953,11 +1891,9 @@ const folderOrder = [
 function renderFolders() {
 
     const area =
-        document
-            .getElementById(
-                "folderArea"
-            );
-
+        document.getElementById(
+            "folderArea"
+        );
 
     if (!nasabahData.length) {
 
@@ -1970,10 +1906,8 @@ function renderFolders() {
 
     }
 
-
     let html =
         `<div class="folder-grid">`;
-
 
     folderOrder.forEach(
         status => {
@@ -1988,36 +1922,27 @@ function renderFolders() {
                     )
                 );
 
-
             if (!data.length) {
                 return;
             }
 
-
             let label;
 
-
-            if (
-                status === ">10"
-            ) {
+            if (status === ">10") {
 
                 label =
                     "LELANG / >10 HARI";
 
             }
 
-            else if (
-                status === "H"
-            ) {
+            else if (status === "H") {
 
                 label =
                     "JATUH TEMPO HARI INI";
 
             }
 
-            else if (
-                status.startsWith("H-")
-            ) {
+            else if (status.startsWith("H-")) {
 
                 label =
                     `JATUH TEMPO ${status.substring(2)} HARI LAGI`;
@@ -2031,10 +1956,8 @@ function renderFolders() {
 
             }
 
-
             const safeStatus =
                 makeSafeId(status);
-
 
             html += `
 
@@ -2056,7 +1979,6 @@ function renderFolders() {
 
                 </div>
 
-
                 <div
                     id="folder-${safeStatus}"
                     class="subfolders">
@@ -2070,13 +1992,9 @@ function renderFolders() {
         }
     );
 
+    html += `</div>`;
 
-    html +=
-        `</div>`;
-
-
-    area.innerHTML =
-        html;
+    area.innerHTML = html;
 
 }
 
@@ -2085,9 +2003,7 @@ function renderFolders() {
    SUBFOLDER
 ===================================================== */
 
-function renderSubfolders(
-    status
-) {
+function renderSubfolders(status) {
 
     const lima =
         sortByIdAscending(
@@ -2100,7 +2016,6 @@ function renderSubfolders(
             )
         );
 
-
     const sepuluh =
         sortByIdAscending(
             nasabahData.filter(
@@ -2111,7 +2026,6 @@ function renderSubfolders(
                     Number(n.bunga) === 10
             )
         );
-
 
     return `
 
@@ -2131,7 +2045,6 @@ function renderSubfolders(
 
             </div>
 
-
             <div
                 id="customers-${makeSafeId(status)}-5"
                 class="customer-list">
@@ -2145,7 +2058,6 @@ function renderSubfolders(
             </div>
 
         </div>
-
 
         <div
             class="subfolder"
@@ -2162,7 +2074,6 @@ function renderSubfolders(
                 </span>
 
             </div>
-
 
             <div
                 id="customers-${makeSafeId(status)}-10"
@@ -2190,14 +2101,8 @@ function renderSubfolders(
 function makeSafeId(status) {
 
     return status
-        .replace(
-            ">",
-            "lebih"
-        )
-        .replace(
-            "-",
-            "minus"
-        );
+        .replace(">", "lebih")
+        .replace("-", "minus");
 
 }
 
@@ -2206,28 +2111,20 @@ function makeSafeId(status) {
    TOGGLE FOLDER
 ===================================================== */
 
-function toggleFolder(
-    status
-) {
+function toggleFolder(status) {
 
     const id =
         "folder-" +
         makeSafeId(status);
 
-
     const element =
-        document
-            .getElementById(id);
-
+        document.getElementById(id);
 
     if (!element) {
         return;
     }
 
-
-    element.classList.toggle(
-        "show"
-    );
+    element.classList.toggle("show");
 
 }
 
@@ -2244,20 +2141,14 @@ function toggleCustomerList(
     const id =
         `customers-${makeSafeId(status)}-${bunga}`;
 
-
     const element =
-        document
-            .getElementById(id);
-
+        document.getElementById(id);
 
     if (!element) {
         return;
     }
 
-
-    element.classList.toggle(
-        "show"
-    );
+    element.classList.toggle("show");
 
 }
 
@@ -2273,10 +2164,7 @@ function renderCustomers(
 ) {
 
     data =
-        sortByIdAscending(
-            data
-        );
-
+        sortByIdAscending(data);
 
     if (!data.length) {
 
@@ -2288,9 +2176,7 @@ function renderCustomers(
 
     }
 
-
     let html = "";
-
 
     if (data.length > 1) {
 
@@ -2308,22 +2194,22 @@ function renderCustomers(
 
     }
 
-
     data.forEach(
         nasabah => {
 
             const index =
-                nasabahData.indexOf(
-                    nasabah
-                );
+                nasabahData.indexOf(nasabah);
 
+            const hariTerlambat =
+                getHariTerlambat(
+                    nasabah.tanggal_jatuh_tempo
+                );
 
             html += `
 
                 <div
                     class="customer"
                     onclick="event.stopPropagation()">
-
 
                     <div class="customer-name">
 
@@ -2334,8 +2220,14 @@ function renderCustomers(
 
                     </div>
 
-
                     <div class="customer-info">
+
+                        📄 No. SBG:
+                        ${escapeHTML(
+                            nasabah.no_sbg || "-"
+                        )}
+
+                        <br>
 
                         📱
                         ${escapeHTML(
@@ -2367,8 +2259,13 @@ function renderCustomers(
                             )
                         )}
 
-                    </div>
+                        ${
+                            hariTerlambat > 0
+                            ? `<br>⏰ Lewat: ${hariTerlambat} hari`
+                            : ""
+                        }
 
+                    </div>
 
                     <div class="customer-actions">
 
@@ -2380,7 +2277,6 @@ function renderCustomers(
 
                         </button>
 
-
                         <button
                             class="btn btn-dark"
                             onclick="event.stopPropagation(); teleponNasabah(${index})">
@@ -2389,7 +2285,6 @@ function renderCustomers(
 
                         </button>
 
-
                         <button
                             class="btn btn-orange"
                             onclick="event.stopPropagation(); bukaEditNasabah(${index})">
@@ -2397,7 +2292,6 @@ function renderCustomers(
                             ✏️ Edit
 
                         </button>
-
 
                         <button
                             class="btn btn-danger"
@@ -2409,14 +2303,12 @@ function renderCustomers(
 
                     </div>
 
-
                 </div>
 
             `;
 
         }
     );
-
 
     return html;
 
@@ -2446,76 +2338,45 @@ function escapeHTML(text) {
 function bukaTambahNasabah() {
 
     document
-        .getElementById(
-            "modalTitle"
-        )
+        .getElementById("modalTitle")
         .innerText =
         "➕ Tambah Nasabah";
 
+    document
+        .getElementById("nasabahId")
+        .value = "";
 
     document
-        .getElementById(
-            "nasabahId"
-        )
-        .value =
-        "";
-
+        .getElementById("nasabahNama")
+        .value = "";
 
     document
-        .getElementById(
-            "nasabahNama"
-        )
-        .value =
-        "";
-
+        .getElementById("nasabahSbg")
+        .value = "";
 
     document
-        .getElementById(
-            "nasabahNomor"
-        )
-        .value =
-        "";
-
+        .getElementById("nasabahNomor")
+        .value = "";
 
     document
-        .getElementById(
-            "nasabahTempo"
-        )
-        .value =
-        "";
-
+        .getElementById("nasabahTempo")
+        .value = "";
 
     document
-        .getElementById(
-            "nasabahBunga"
-        )
-        .value =
-        "5";
-
+        .getElementById("nasabahBunga")
+        .value = "5";
 
     document
-        .getElementById(
-            "crudError"
-        )
-        .style.display =
-        "none";
-
+        .getElementById("crudError")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "simpanNasabahButton"
-        )
-        .innerText =
-        "💾 Simpan";
-
+        .getElementById("simpanNasabahButton")
+        .innerText = "💾 Simpan";
 
     document
-        .getElementById(
-            "nasabahModal"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("nasabahModal")
+        .classList.add("show");
 
 }
 
@@ -2524,13 +2385,10 @@ function bukaTambahNasabah() {
    MODAL EDIT
 ===================================================== */
 
-function bukaEditNasabah(
-    index
-) {
+function bukaEditNasabah(index) {
 
     const nasabah =
         nasabahData[index];
-
 
     if (!nasabah) {
 
@@ -2541,7 +2399,6 @@ function bukaEditNasabah(
         return;
 
     }
-
 
     if (
         nasabah.id === undefined ||
@@ -2557,82 +2414,55 @@ function bukaEditNasabah(
 
     }
 
-
     document
-        .getElementById(
-            "modalTitle"
-        )
+        .getElementById("modalTitle")
         .innerText =
         "✏️ Edit Nasabah";
 
-
     document
-        .getElementById(
-            "nasabahId"
-        )
+        .getElementById("nasabahId")
         .value =
         nasabah.id;
 
-
     document
-        .getElementById(
-            "nasabahNama"
-        )
+        .getElementById("nasabahNama")
         .value =
         nasabah.nama || "";
 
+    document
+        .getElementById("nasabahSbg")
+        .value =
+        nasabah.no_sbg || "";
 
     document
-        .getElementById(
-            "nasabahNomor"
-        )
+        .getElementById("nasabahNomor")
         .value =
         nasabah.nomor_hp || "";
 
-
     document
-        .getElementById(
-            "nasabahTempo"
-        )
+        .getElementById("nasabahTempo")
         .value =
         nasabah.tanggal_jatuh_tempo || "";
 
-
     document
-        .getElementById(
-            "nasabahBunga"
-        )
+        .getElementById("nasabahBunga")
         .value =
-        Number(
-            nasabah.bunga
-        ) === 10
+        Number(nasabah.bunga) === 10
             ? "10"
             : "5";
 
+    document
+        .getElementById("crudError")
+        .style.display = "none";
 
     document
-        .getElementById(
-            "crudError"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "simpanNasabahButton"
-        )
+        .getElementById("simpanNasabahButton")
         .innerText =
         "💾 Simpan Perubahan";
 
-
     document
-        .getElementById(
-            "nasabahModal"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("nasabahModal")
+        .classList.add("show");
 
 }
 
@@ -2644,12 +2474,8 @@ function bukaEditNasabah(
 function tutupModalNasabah() {
 
     document
-        .getElementById(
-            "nasabahModal"
-        )
-        .classList.remove(
-            "show"
-        );
+        .getElementById("nasabahModal")
+        .classList.remove("show");
 
 }
 
@@ -2662,54 +2488,49 @@ function validasiFormNasabah() {
 
     const nama =
         document
-            .getElementById(
-                "nasabahNama"
-            )
+            .getElementById("nasabahNama")
             .value
             .trim();
 
+    const noSbg =
+        document
+            .getElementById("nasabahSbg")
+            .value
+            .trim();
 
     const nomor =
         document
-            .getElementById(
-                "nasabahNomor"
-            )
+            .getElementById("nasabahNomor")
             .value
             .trim();
 
-
     const tempo =
         document
-            .getElementById(
-                "nasabahTempo"
-            )
+            .getElementById("nasabahTempo")
             .value;
-
 
     const bunga =
         Number(
             document
-                .getElementById(
-                    "nasabahBunga"
-                )
+                .getElementById("nasabahBunga")
                 .value
         );
-
 
     if (!nama) {
         return "Nama nasabah wajib diisi.";
     }
 
+    if (!noSbg) {
+        return "No. SBG wajib diisi.";
+    }
 
     if (!nomor) {
         return "Nomor HP wajib diisi.";
     }
 
-
     if (!tempo) {
         return "Tanggal jatuh tempo wajib diisi.";
     }
-
 
     if (
         bunga !== 5 &&
@@ -2719,7 +2540,6 @@ function validasiFormNasabah() {
         return "Bunga tidak valid.";
 
     }
-
 
     return "";
 
@@ -2737,18 +2557,12 @@ async function simpanNasabah() {
             .auth
             .getSession();
 
-
     const session =
-        sessionResult
-            .data
-            .session;
-
+        sessionResult.data.session;
 
     if (
         !session ||
-        !userDiizinkan(
-            session.user
-        )
+        !userDiizinkan(session.user)
     ) {
 
         alert(
@@ -2761,21 +2575,13 @@ async function simpanNasabah() {
 
     }
 
-
     const validation =
         validasiFormNasabah();
 
-
     const errorBox =
-        document
-            .getElementById(
-                "crudError"
-            );
+        document.getElementById("crudError");
 
-
-    errorBox.style.display =
-        "none";
-
+    errorBox.style.display = "none";
 
     if (validation) {
 
@@ -2789,93 +2595,76 @@ async function simpanNasabah() {
 
     }
 
-
     const id =
         document
-            .getElementById(
-                "nasabahId"
-            )
+            .getElementById("nasabahId")
             .value
             .trim();
-
 
     const nama =
         document
-            .getElementById(
-                "nasabahNama"
-            )
+            .getElementById("nasabahNama")
             .value
             .trim();
 
+    const noSbg =
+        document
+            .getElementById("nasabahSbg")
+            .value
+            .trim();
 
     const nomor =
         document
-            .getElementById(
-                "nasabahNomor"
-            )
+            .getElementById("nasabahNomor")
             .value
             .trim();
 
-
     const tempo =
         document
-            .getElementById(
-                "nasabahTempo"
-            )
+            .getElementById("nasabahTempo")
             .value;
-
 
     const bunga =
         Number(
             document
-                .getElementById(
-                    "nasabahBunga"
-                )
+                .getElementById("nasabahBunga")
                 .value
         );
 
-
     const button =
         document
-            .getElementById(
-                "simpanNasabahButton"
-            );
+            .getElementById("simpanNasabahButton");
 
-
-    button.disabled =
-        true;
-
+    button.disabled = true;
 
     button.innerText =
         "⏳ Menyimpan...";
-
 
     try {
 
         let result;
 
+        const payload = {
+
+            nama: nama,
+
+            no_sbg: noSbg,
+
+            nomor_hp: nomor,
+
+            tanggal_jatuh_tempo: tempo,
+
+            bunga: bunga
+
+        };
 
         if (id) {
 
             result =
                 await supabaseClient
                     .from("nasabah")
-                    .update({
-
-                        nama: nama,
-
-                        nomor_hp: nomor,
-
-                        tanggal_jatuh_tempo:
-                            tempo,
-
-                        bunga: bunga
-
-                    })
-                    .eq(
-                        "id",
-                        id
-                    )
+                    .update(payload)
+                    .eq("id", id)
                     .select();
 
         }
@@ -2885,27 +2674,14 @@ async function simpanNasabah() {
             result =
                 await supabaseClient
                     .from("nasabah")
-                    .insert({
-
-                        nama: nama,
-
-                        nomor_hp: nomor,
-
-                        tanggal_jatuh_tempo:
-                            tempo,
-
-                        bunga: bunga
-
-                    })
+                    .insert(payload)
                     .select();
 
         }
 
-
         if (result.error) {
             throw result.error;
         }
-
 
         if (
             id &&
@@ -2919,12 +2695,9 @@ async function simpanNasabah() {
 
         }
 
-
         tutupModalNasabah();
 
-
         await ambilDataNasabah();
-
 
         alert(
             id
@@ -2941,14 +2714,12 @@ async function simpanNasabah() {
             error
         );
 
-
         errorBox.innerText =
             "Gagal menyimpan data: " +
             (
                 error.message ||
                 "Kesalahan tidak diketahui."
             );
-
 
         errorBox.style.display =
             "block";
@@ -2957,9 +2728,7 @@ async function simpanNasabah() {
 
     finally {
 
-        button.disabled =
-            false;
-
+        button.disabled = false;
 
         button.innerText =
             id
@@ -2972,16 +2741,13 @@ async function simpanNasabah() {
 
 
 /* =====================================================
-   HAPUS
+   HAPUS MANUAL
 ===================================================== */
 
-async function hapusNasabah(
-    index
-) {
+async function hapusNasabah(index) {
 
     const nasabah =
         nasabahData[index];
-
 
     if (!nasabah) {
 
@@ -2993,10 +2759,8 @@ async function hapusNasabah(
 
     }
 
-
     const id =
         nasabah.id;
-
 
     if (
         id === undefined ||
@@ -3012,7 +2776,6 @@ async function hapusNasabah(
 
     }
 
-
     const yakin =
         confirm(
             `Hapus data nasabah "${nasabah.nama}"?\n\n` +
@@ -3020,11 +2783,9 @@ async function hapusNasabah(
             `Data akan dihapus dari database.`
         );
 
-
     if (!yakin) {
         return;
     }
-
 
     const {
         data: sessionData
@@ -3032,7 +2793,6 @@ async function hapusNasabah(
         await supabaseClient
             .auth
             .getSession();
-
 
     if (
         !sessionData.session ||
@@ -3049,18 +2809,13 @@ async function hapusNasabah(
 
     }
 
-
     const {
         error
     } =
         await supabaseClient
             .from("nasabah")
             .delete()
-            .eq(
-                "id",
-                id
-            );
-
+            .eq("id", id);
 
     if (error) {
 
@@ -3073,9 +2828,7 @@ async function hapusNasabah(
 
     }
 
-
     await ambilDataNasabah();
-
 
     alert(
         "✅ Data nasabah berhasil dihapus."
@@ -3085,28 +2838,246 @@ async function hapusNasabah(
 
 
 /* =====================================================
+   PENCARIAN KHUSUS PENAKSIR
+===================================================== */
+
+function cariNasabah() {
+
+    const input =
+        document
+            .getElementById("searchNasabah")
+            .value
+            .trim()
+            .toLowerCase();
+
+    const results =
+        document
+            .getElementById("searchResults");
+
+    if (!input) {
+
+        results.innerHTML = "";
+
+        return;
+
+    }
+
+    const hasil =
+        sortByIdAscending(
+            nasabahData.filter(
+                nasabah => {
+
+                    const nama =
+                        String(
+                            nasabah.nama || ""
+                        ).toLowerCase();
+
+                    const sbg =
+                        String(
+                            nasabah.no_sbg || ""
+                        ).toLowerCase();
+
+                    return (
+                        nama.includes(input) ||
+                        sbg.includes(input)
+                    );
+
+                }
+            )
+        );
+
+    if (!hasil.length) {
+
+        results.innerHTML =
+            `<div class="empty">
+                🔍 Nasabah tidak ditemukan.
+            </div>`;
+
+        return;
+
+    }
+
+    let html = "";
+
+    hasil.forEach(
+        nasabah => {
+
+            const hari =
+                getHariTerlambat(
+                    nasabah.tanggal_jatuh_tempo
+                );
+
+            const index =
+                nasabahData.indexOf(nasabah);
+
+            let statusHTML;
+
+            if (hari > 0) {
+
+                statusHTML =
+                    `<div class="search-late">
+                        ⏰ LEWAT ${hari} HARI
+                    </div>`;
+
+            }
+
+            else {
+
+                const status =
+                    getStatusNasabah(
+                        nasabah.tanggal_jatuh_tempo
+                    );
+
+                if (status === "H-2") {
+
+                    statusHTML =
+                        `<div class="search-late">
+                            📅 JATUH TEMPO 2 HARI LAGI
+                        </div>`;
+
+                }
+
+                else if (status === "H-1") {
+
+                    statusHTML =
+                        `<div class="search-late">
+                            📅 JATUH TEMPO BESOK
+                        </div>`;
+
+                }
+
+                else if (status === "H") {
+
+                    statusHTML =
+                        `<div class="search-late">
+                            ⚠️ JATUH TEMPO HARI INI
+                        </div>`;
+
+                }
+
+                else {
+
+                    statusHTML =
+                        `<div class="search-late">
+                            📅 BELUM JATUH TEMPO
+                        </div>`;
+
+                }
+
+            }
+
+            html += `
+
+                <div class="search-result">
+
+                    <div class="search-result-name">
+
+                        👤
+                        ${escapeHTML(
+                            nasabah.nama || "-"
+                        )}
+
+                    </div>
+
+                    <div class="search-result-info">
+
+                        📄 No. SBG:
+                        <b>
+                            ${escapeHTML(
+                                nasabah.no_sbg || "-"
+                            )}
+                        </b>
+
+                        <br>
+
+                        📱
+                        ${escapeHTML(
+                            nasabah.nomor_hp || "-"
+                        )}
+
+                        <br>
+
+                        📅 Jatuh tempo:
+                        ${formatTanggal(
+                            parseTanggal(
+                                nasabah.tanggal_jatuh_tempo
+                            )
+                        )}
+
+                        <br>
+
+                        💰 Bunga:
+                        ${Number(
+                            nasabah.bunga || 0
+                        )}%
+
+                    </div>
+
+                    ${statusHTML}
+
+                    <div class="customer-actions">
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="kirimWASatu(${index})">
+
+                            📲 WA
+
+                        </button>
+
+                        <button
+                            class="btn btn-dark"
+                            onclick="teleponNasabah(${index})">
+
+                            📞 Telepon
+
+                        </button>
+
+                        <button
+                            class="btn btn-orange"
+                            onclick="bukaEditNasabah(${index})">
+
+                            ✏️ Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger"
+                            onclick="hapusNasabah(${index})">
+
+                            🗑️ Hapus
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+    results.innerHTML = html;
+
+}
+
+
+/* =====================================================
    PESAN FOLLOW UP
 ===================================================== */
 
-function buatPesan(
-    nasabah
-) {
+function buatPesan(nasabah) {
 
     const bunga =
-        Number(
-            nasabah.bunga
-        );
-
+        Number(nasabah.bunga);
 
     const status =
         getStatusNasabah(
             nasabah.tanggal_jatuh_tempo
         );
 
-
-    if (
-        status === ">10"
-    ) {
+    if (status === ">10") {
 
         return `Pemberitahuan...
 
@@ -3114,14 +3085,9 @@ function buatPesan(
 
     }
 
+    if (bunga === 5) {
 
-    if (
-        bunga === 5
-    ) {
-
-        if (
-            status === "H-2"
-        ) {
+        if (status === "H-2") {
 
             return `*"PT. GADAI OGAN BARU"*
 OUTLET 07
@@ -3136,10 +3102,7 @@ Terima kasih😊🙏`;
 
         }
 
-
-        if (
-            status === "H"
-        ) {
+        if (status === "H") {
 
             return `*"PT. GADAI OGAN BARU"*
 OUTLET 07
@@ -3154,7 +3117,6 @@ Terima kasih😊🙏`;
 
         }
 
-
         if (
             status !== "H-1" &&
             status !== "H-2" &&
@@ -3164,7 +3126,6 @@ Terima kasih😊🙏`;
 
             const hari =
                 Number(status);
-
 
             return `*"PT. GADAI OGAN BARU"*
 OUTLET 07
@@ -3181,14 +3142,9 @@ Terima kasih😊🙏`;
 
     }
 
+    if (bunga === 10) {
 
-    if (
-        bunga === 10
-    ) {
-
-        if (
-            status === "H-2"
-        ) {
+        if (status === "H-2") {
 
             return `*"PT. GADAI OGAN BARU"*
 OUTLET 07
@@ -3203,10 +3159,7 @@ Terima kasih 😊🙏`;
 
         }
 
-
-        if (
-            status === "H"
-        ) {
+        if (status === "H") {
 
             return `*"PT. GADAI OGAN BARU"*
 OUTLET 07
@@ -3215,12 +3168,11 @@ Barang gadai Bapak/Ibu *_TELAH JATUH TEMPO HARI INI._* Segera di tebus/diperpanj
 
 *Apabila bapak/ibu mau perpanjang segera datang ke PT. GADAI OGAN BARU atau via Transfer ke rekening kami (hubungi via whatsapp)*
 
-Jika barang jaminan ingin ditebus dan barang jaminannya masih ada dan belum terjual maka barang gadai yang *_sudah melebihi 15 ( Lima Belas ) hari dari tanggal jatuh tempo maka akan dikenakan Bunga keterlambatan tebus 10%+Denda_*
+Jika barang gadai ingin ditebus dan barang jaminannya masih ada dan belum terjual maka barang gadai yang *_sudah melebihi 15 ( Lima Belas ) hari dari tanggal jatuh tempo maka akan dikenakan Bunga keterlambatan tebus 10%+Denda_*
 
 Terima kasih 😊🙏`;
 
         }
-
 
         if (
             status !== "H-1" &&
@@ -3232,7 +3184,6 @@ Terima kasih 😊🙏`;
             const hari =
                 Number(status);
 
-
             return `*"PT. GADAI OGAN BARU"*
 OUTLET 07
 
@@ -3240,14 +3191,13 @@ Barang gadai Bapak/Ibu *_SUDAH LEWAT ${hari} HARI DARI TANGGAL JATUH TEMPO._* Se
 
 *Apabila bapak/ibu mau perpanjang segera datang ke PT. GADAI OGAN BARU atau via Transfer ke rekening kami (hubungi via whatsapp)*
 
-Jika barang jaminan ingin ditebus dan barang jaminannya masih ada dan belum terjual maka barang gadai yang *_sudah melebihi 15 ( Lima Belas ) hari dari tanggal jatuh tempo maka akan dikenakan Bunga keterlambatan tebus 10%+Denda_*
+Jika barang gadai ingin ditebus dan barang jaminannya masih ada dan belum terjual maka barang gadai yang *_sudah melebihi 15 ( Lima Belas ) hari dari tanggal jatuh tempo maka akan dikenakan Bunga keterlambatan tebus 10%+Denda_*
 
 Terima kasih 😊🙏`;
 
         }
 
     }
-
 
     return "";
 
@@ -3258,23 +3208,13 @@ Terima kasih 😊🙏`;
    FORMAT WA
 ===================================================== */
 
-function formatNomorWA(
-    nomor
-) {
+function formatNomorWA(nomor) {
 
     let no =
-        String(
-            nomor || ""
-        )
-        .replace(
-            /\D/g,
-            ""
-        );
+        String(nomor || "")
+        .replace(/\D/g, "");
 
-
-    if (
-        no.startsWith("0")
-    ) {
+    if (no.startsWith("0")) {
 
         no =
             "62" +
@@ -3282,17 +3222,13 @@ function formatNomorWA(
 
     }
 
-
-    if (
-        !no.startsWith("62")
-    ) {
+    if (!no.startsWith("62")) {
 
         no =
             "62" +
             no;
 
     }
-
 
     return no;
 
@@ -3303,28 +3239,17 @@ function formatNomorWA(
    FORMAT TELEPON
 ===================================================== */
 
-function formatNomorTelepon(
-    nomor
-) {
+function formatNomorTelepon(nomor) {
 
     let no =
-        String(
-            nomor || ""
-        )
-        .replace(
-            /\D/g,
-            ""
-        );
-
+        String(nomor || "")
+        .replace(/\D/g, "");
 
     if (!no) {
         return "";
     }
 
-
-    if (
-        no.startsWith("0")
-    ) {
+    if (no.startsWith("0")) {
 
         no =
             "62" +
@@ -3332,17 +3257,13 @@ function formatNomorTelepon(
 
     }
 
-
-    if (
-        !no.startsWith("62")
-    ) {
+    if (!no.startsWith("62")) {
 
         no =
             "62" +
             no;
 
     }
-
 
     return no;
 
@@ -3353,13 +3274,10 @@ function formatNomorTelepon(
    WA SATU
 ===================================================== */
 
-function kirimWASatu(
-    index
-) {
+function kirimWASatu(index) {
 
     const nasabah =
         nasabahData[index];
-
 
     if (!nasabah) {
 
@@ -3371,12 +3289,10 @@ function kirimWASatu(
 
     }
 
-
     const nomor =
         formatNomorWA(
             nasabah.nomor_hp
         );
-
 
     if (!nomor) {
 
@@ -3388,12 +3304,8 @@ function kirimWASatu(
 
     }
 
-
     const pesan =
-        buatPesan(
-            nasabah
-        );
-
+        buatPesan(nasabah);
 
     if (!pesan) {
 
@@ -3405,15 +3317,11 @@ function kirimWASatu(
 
     }
 
-
     const url =
         "https://wa.me/" +
         nomor +
         "?text=" +
-        encodeURIComponent(
-            pesan
-        );
-
+        encodeURIComponent(pesan);
 
     window.open(
         url,
@@ -3427,13 +3335,10 @@ function kirimWASatu(
    TELEPON SATU
 ===================================================== */
 
-function teleponNasabah(
-    index
-) {
+function teleponNasabah(index) {
 
     const nasabah =
         nasabahData[index];
-
 
     if (!nasabah) {
 
@@ -3445,12 +3350,10 @@ function teleponNasabah(
 
     }
 
-
     const nomor =
         formatNomorTelepon(
             nasabah.nomor_hp
         );
-
 
     if (!nomor) {
 
@@ -3462,10 +3365,8 @@ function teleponNasabah(
 
     }
 
-
     window.location.href =
-        "tel:+" +
-        nomor;
+        "tel:+" + nomor;
 
 }
 
@@ -3491,7 +3392,6 @@ function mulaiKirimSemua(
             )
         );
 
-
     if (!queueWA.length) {
 
         alert(
@@ -3502,26 +3402,13 @@ function mulaiKirimSemua(
 
     }
 
-
     queueIndex = 0;
 
-
     document
-        .getElementById(
-            "queueBox"
-        )
-        .classList.add(
-            "show"
-        );
-
+        .getElementById("queueBox")
+        .classList.add("show");
 
     updateQueueInfo();
-
-    /*
-       PENTING:
-       Tidak lagi otomatis menjalankan WA.
-       User memilih sendiri WA / Telepon.
-    */
 
 }
 
@@ -3533,69 +3420,48 @@ function mulaiKirimSemua(
 function updateQueueInfo() {
 
     const info =
-        document
-            .getElementById(
-                "queueInfo"
-            );
-
+        document.getElementById(
+            "queueInfo"
+        );
 
     const backButton =
-        document
-            .getElementById(
-                "queueBackButton"
-            );
-
+        document.getElementById(
+            "queueBackButton"
+        );
 
     const nextButton =
-        document
-            .getElementById(
-                "queueNextButton"
-            );
+        document.getElementById(
+            "queueNextButton"
+        );
 
-
-    if (
-        !queueWA.length
-    ) {
+    if (!queueWA.length) {
 
         info.innerHTML =
             "Tidak ada nasabah dalam antrian.";
 
+        backButton.disabled = true;
 
-        backButton.disabled =
-            true;
-
-
-        nextButton.disabled =
-            true;
-
+        nextButton.disabled = true;
 
         return;
 
     }
 
-
     const nasabah =
         queueWA[queueIndex];
-
 
     if (!nasabah) {
 
         info.innerHTML =
             "Data nasabah tidak ditemukan.";
 
+        backButton.disabled = true;
 
-        backButton.disabled =
-            true;
-
-
-        nextButton.disabled =
-            true;
-
+        nextButton.disabled = true;
 
         return;
 
     }
-
 
     info.innerHTML =
         `Nasabah ${queueIndex + 1}
@@ -3604,26 +3470,14 @@ function updateQueueInfo() {
              nasabah.nama || "-"
          )}</b>
          • ID: <b>${escapeHTML(
-             String(
-                 nasabah.id ?? "-"
-             )
+             String(nasabah.id ?? "-")
          )}</b>
          • 📱 ${escapeHTML(
              nasabah.nomor_hp || "-"
          )}`;
 
-
-    /*
-       Back mati jika sudah di nasabah pertama.
-    */
-
     backButton.disabled =
         queueIndex <= 0;
-
-
-    /*
-       Next mati jika sudah di nasabah terakhir.
-    */
 
     nextButton.disabled =
         queueIndex >=
@@ -3633,14 +3487,12 @@ function updateQueueInfo() {
 
 
 /* =====================================================
-   WA NASABAH SAAT INI
+   WA ANTRIAN
 ===================================================== */
 
 function kirimWAQueueBerikutnya() {
 
-    if (
-        !queueWA.length
-    ) {
+    if (!queueWA.length) {
 
         alert(
             "Antrian belum tersedia."
@@ -3650,10 +3502,8 @@ function kirimWAQueueBerikutnya() {
 
     }
 
-
     const nasabah =
         queueWA[queueIndex];
-
 
     if (!nasabah) {
 
@@ -3665,12 +3515,10 @@ function kirimWAQueueBerikutnya() {
 
     }
 
-
     const nomor =
         formatNomorWA(
             nasabah.nomor_hp
         );
-
 
     if (!nomor) {
 
@@ -3682,12 +3530,8 @@ function kirimWAQueueBerikutnya() {
 
     }
 
-
     const pesan =
-        buatPesan(
-            nasabah
-        );
-
+        buatPesan(nasabah);
 
     if (!pesan) {
 
@@ -3699,41 +3543,27 @@ function kirimWAQueueBerikutnya() {
 
     }
 
-
     const url =
         "https://wa.me/" +
         nomor +
         "?text=" +
-        encodeURIComponent(
-            pesan
-        );
-
+        encodeURIComponent(pesan);
 
     window.open(
         url,
         "_blank"
     );
 
-
-    /*
-       TIDAK ADA queueIndex++ DI SINI.
-
-       Jadi setelah WA dibuka,
-       posisi nasabah tetap sama.
-    */
-
 }
 
 
 /* =====================================================
-   TELEPON NASABAH SAAT INI
+   TELEPON ANTRIAN
 ===================================================== */
 
 function teleponQueueBerikutnya() {
 
-    if (
-        !queueWA.length
-    ) {
+    if (!queueWA.length) {
 
         alert(
             "Antrian belum tersedia."
@@ -3743,10 +3573,8 @@ function teleponQueueBerikutnya() {
 
     }
 
-
     const nasabah =
         queueWA[queueIndex];
-
 
     if (!nasabah) {
 
@@ -3758,12 +3586,10 @@ function teleponQueueBerikutnya() {
 
     }
 
-
     const nomor =
         formatNomorTelepon(
             nasabah.nomor_hp
         );
-
 
     if (!nomor) {
 
@@ -3775,35 +3601,21 @@ function teleponQueueBerikutnya() {
 
     }
 
-
     window.location.href =
-        "tel:+" +
-        nomor;
-
-
-    /*
-       Tidak mengubah queueIndex.
-       Setelah telepon selesai,
-       posisi tetap pada nasabah tersebut.
-    */
+        "tel:+" + nomor;
 
 }
 
 
 /* =====================================================
-   NEXT ANTRIAN
+   NEXT
 ===================================================== */
 
 function queueBerikutnya() {
 
-    if (
-        !queueWA.length
-    ) {
-
+    if (!queueWA.length) {
         return;
-
     }
-
 
     if (
         queueIndex >=
@@ -3816,9 +3628,7 @@ function queueBerikutnya() {
 
     }
 
-
     queueIndex++;
-
 
     updateQueueInfo();
 
@@ -3826,23 +3636,16 @@ function queueBerikutnya() {
 
 
 /* =====================================================
-   BACK ANTRIAN
+   BACK
 ===================================================== */
 
 function queueSebelumnya() {
 
-    if (
-        !queueWA.length
-    ) {
-
+    if (!queueWA.length) {
         return;
-
     }
 
-
-    if (
-        queueIndex <= 0
-    ) {
+    if (queueIndex <= 0) {
 
         updateQueueInfo();
 
@@ -3850,9 +3653,7 @@ function queueSebelumnya() {
 
     }
 
-
     queueIndex--;
-
 
     updateQueueInfo();
 
@@ -3867,13 +3668,9 @@ supabaseClient
     .auth
     .getSession()
     .then(
-        async ({
-            data
-        }) => {
+        async ({data}) => {
 
-            if (
-                data.session
-            ) {
+            if (data.session) {
 
                 if (
                     userDiizinkan(
@@ -3940,7 +3737,6 @@ supabaseClient
 
             }
 
-
             if (
                 session &&
                 event === "SIGNED_IN"
@@ -3953,7 +3749,6 @@ supabaseClient
                 await ambilDataNasabah();
 
             }
-
 
             if (
                 !session &&
@@ -3975,20 +3770,28 @@ supabaseClient
 
 
 /* =====================================================
+   SEARCH EVENT
+===================================================== */
+
+document
+    .getElementById("searchNasabah")
+    .addEventListener(
+        "input",
+        cariNasabah
+    );
+
+
+/* =====================================================
    ENTER LOGIN
 ===================================================== */
 
 document
-    .getElementById(
-        "loginPassword"
-    )
+    .getElementById("loginPassword")
     .addEventListener(
         "keydown",
         function(event) {
 
-            if (
-                event.key === "Enter"
-            ) {
+            if (event.key === "Enter") {
 
                 login();
 
@@ -3999,16 +3802,12 @@ document
 
 
 document
-    .getElementById(
-        "loginUsername"
-    )
+    .getElementById("loginUsername")
     .addEventListener(
         "keydown",
         function(event) {
 
-            if (
-                event.key === "Enter"
-            ) {
+            if (event.key === "Enter") {
 
                 document
                     .getElementById(
@@ -4027,16 +3826,12 @@ document
 ===================================================== */
 
 document
-    .getElementById(
-        "nasabahModal"
-    )
+    .getElementById("nasabahModal")
     .addEventListener(
         "click",
         function(event) {
 
-            if (
-                event.target === this
-            ) {
+            if (event.target === this) {
 
                 tutupModalNasabah();
 
