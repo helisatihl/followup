@@ -2741,101 +2741,180 @@ async function simpanNasabah() {
 
 
 /* =====================================================
-   HAPUS MANUAL
+   HAPUS MANUAL - TETAP DI TAMPILAN SAAT INI
 ===================================================== */
 
-async function hapusNasabah(index) {
+function simpanPosisiTampilan() {
+    return {
+        folders: Array.from(
+            document.querySelectorAll(
+                "#folderArea .subfolders.show"
+            )
+        ).map(element => element.id),
 
-    const nasabah =
-        nasabahData[index];
+        customers: Array.from(
+            document.querySelectorAll(
+                "#folderArea .customer-list.show"
+            )
+        ).map(element => element.id),
+
+        search: document.getElementById(
+            "searchNasabah"
+        ).value
+    };
+}
+
+
+function pulihkanPosisiTampilan(posisi) {
+    if (!posisi) return;
+
+    posisi.folders.forEach(id => {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.classList.add("show");
+        }
+    });
+
+    posisi.customers.forEach(id => {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.classList.add("show");
+        }
+    });
+
+    const searchInput = document.getElementById(
+        "searchNasabah"
+    );
+
+    searchInput.value = posisi.search;
+
+    if (posisi.search.trim()) {
+        cariNasabah();
+    } else {
+        document.getElementById(
+            "searchResults"
+        ).innerHTML = "";
+    }
+}
+
+
+async function hapusNasabah(index) {
+    const nasabah = nasabahData[index];
 
     if (!nasabah) {
-
-        alert(
-            "Data tidak ditemukan."
-        );
-
+        alert("Data nasabah tidak ditemukan.");
         return;
-
     }
 
-    const id =
-        nasabah.id;
+    const id = nasabah.id;
+    const nama = nasabah.nama || "-";
 
     if (
         id === undefined ||
         id === null ||
         String(id).trim() === ""
     ) {
-
-        alert(
-            "Data ini tidak mempunyai ID database."
-        );
-
-        return;
-
-    }
-
-    const yakin =
-        confirm(
-            `Hapus data nasabah "${nasabah.nama}"?\n\n` +
-            `ID: ${id}\n\n` +
-            `Data akan dihapus dari database.`
-        );
-
-    if (!yakin) {
+        alert("Data nasabah tidak memiliki ID database.");
         return;
     }
 
-    const {
-        data: sessionData
-    } =
-        await supabaseClient
-            .auth
-            .getSession();
-
-    if (
-        !sessionData.session ||
-        !userDiizinkan(
-            sessionData.session.user
-        )
-    ) {
-
-        alert(
-            "Session tidak valid."
-        );
-
-        return;
-
-    }
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .from("nasabah")
-            .delete()
-            .eq("id", id);
-
-    if (error) {
-
-        alert(
-            "❌ Gagal menghapus data.\n\n" +
-            error.message
-        );
-
-        return;
-
-    }
-
-    await ambilDataNasabah();
-
-    alert(
-        "✅ Data nasabah berhasil dihapus."
+    const yakin = confirm(
+        `Hapus data nasabah "${nama}"?\n\n` +
+        `ID: ${id}\n\n` +
+        "Data akan dihapus secara permanen dari database."
     );
 
-}
+    if (!yakin) return;
 
+    try {
+        const {
+            data: sessionData,
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+        if (
+            sessionError ||
+            !sessionData.session ||
+            !userDiizinkan(sessionData.session.user)
+        ) {
+            alert(
+                "Session tidak valid. Silakan login kembali."
+            );
+            return;
+        }
+
+        // Simpan folder dan pencarian yang sedang dibuka.
+        const posisi = simpanPosisiTampilan();
+
+        // Hapus data berdasarkan ID dari Supabase.
+        const {
+            data: dataTerhapus,
+            error
+        } = await supabaseClient
+            .from("nasabah")
+            .delete()
+            .eq("id", id)
+            .select("id");
+
+        if (error) {
+            throw error;
+        }
+
+        // Pastikan database benar-benar menghapus data.
+        if (!dataTerhapus || dataTerhapus.length === 0) {
+            alert(
+                "Data belum terhapus dari database.\n\n" +
+                "Periksa izin DELETE pada Supabase atau pastikan " +
+                "data tersebut masih tersedia."
+            );
+            return;
+        }
+
+        // Hapus data dari daftar lokal.
+        nasabahData = nasabahData.filter(
+            item => String(item.id) !== String(id)
+        );
+
+        // Hapus nasabah dari antrean jika sedang ada.
+        queueWA = queueWA.filter(
+            item => String(item.id) !== String(id)
+        );
+
+        // Sesuaikan posisi antrean.
+        if (queueIndex >= queueWA.length) {
+            queueIndex = Math.max(
+                0,
+                queueWA.length - 1
+            );
+        }
+
+        // Render ulang data tanpa memuat ulang halaman.
+        renderFolders();
+
+        // Buka kembali folder yang sebelumnya dibuka.
+        pulihkanPosisiTampilan(posisi);
+
+        // Perbarui informasi antrean jika sedang digunakan.
+        updateQueueInfo();
+
+        alert(
+            `Data nasabah "${nama}" berhasil dihapus.`
+        );
+
+    } catch (error) {
+        console.error(
+            "Gagal menghapus nasabah:",
+            error
+        );
+
+        alert(
+            "Gagal menghapus data nasabah.\n\n" +
+            (error.message || "Terjadi kesalahan.")
+        );
+    }
+}
 
 /* =====================================================
    PENCARIAN KHUSUS PENAKSIR
